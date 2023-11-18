@@ -55,6 +55,18 @@ const deleteVoiceChannel = async (voiceState: VoiceState) => {
 
     channel.edit({
       name: `m -> ${(member.nickname ?? member.displayName).toLowerCase()}`,
+      permissionOverwrites: [
+        {
+          type: OverwriteType.Member,
+          id: sessionMember.id,
+          deny: [PermissionFlagsBits.ManageChannels],
+        },
+        {
+          type: OverwriteType.Member,
+          id: member.id,
+          allow: [PermissionFlagsBits.ManageChannels],
+        },
+      ],
     });
   } catch (error) {
     console.warn(`[ERROR]: Delete voice error: ${error}`);
