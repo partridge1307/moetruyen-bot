@@ -1,0 +1,23 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: SSH into the server and run a command
+        run: |
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{secrets.SSH_SERVER_IP}} << 'EOF'
+            echo "Connected!!!"
+            export PATH="$PATH:/usr/bin/nodejs"
+            cd ~/bot
+            git pull
+            yarn install
+            yarn build
+            pm2 restart bot
+            echo "Deployment done!"
+          EOF
