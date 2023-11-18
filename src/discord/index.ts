@@ -9,10 +9,12 @@ discord_client.once(Events.ClientReady, (c) => {
   for (const [_, guild] of guilds) {
     const voiceChannels = guild.channels.cache.filter(
       (channel) =>
-        channel instanceof VoiceChannel && channel.name.startsWith('m ->')
+        channel instanceof VoiceChannel && channel.name.startsWith('m -> ')
     ) as Collection<string, VoiceChannel>;
 
     voiceChannels.map((vc) => {
+      if (!vc.members.size) return vc.delete();
+
       const username = vc.name.split(' -> ')[1];
       const member = vc.members.find(
         (mem) => mem.user.username.toLowerCase() === username
