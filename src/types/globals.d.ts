@@ -1,9 +1,17 @@
-import type { Client } from 'discord.js';
+import type {
+  ChatInputCommandInteraction,
+  SlashCommandSubcommandsOnlyBuilder,
+} from 'discord.js';
 
 export enum NODE_ENV_ENUM {
   production = 'production',
   development = 'development',
 }
+
+export type TCommand = {
+  data: SlashCommandSubcommandsOnlyBuilder;
+  execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
+};
 
 declare global {
   namespace NodeJS {

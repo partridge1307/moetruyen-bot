@@ -1,9 +1,4 @@
-import {
-  ChannelType,
-  OverwriteType,
-  PermissionFlagsBits,
-  VoiceState,
-} from 'discord.js';
+import { ChannelType, VoiceState } from 'discord.js';
 import { cachedVC } from '../bot_client';
 
 const createVoiceChannel = async (voiceState: VoiceState) => {
@@ -13,60 +8,48 @@ const createVoiceChannel = async (voiceState: VoiceState) => {
 
   try {
     const createdVC = await channel.guild.channels.create({
-      name: `m -> ${(member.nickname ?? member.displayName).toLowerCase()}`,
+      name: `m -> ${member.displayName.toLowerCase()}`,
       type: ChannelType.GuildVoice,
       parent: channel.parent,
       userLimit: 7,
-      permissionOverwrites: [
-        {
-          type: OverwriteType.Member,
-          id: member.id,
-          allow: [PermissionFlagsBits.ManageChannels],
-        },
-      ],
     });
 
-    await Promise.all([member.voice.setChannel(createdVC)]);
+    await member.voice.setChannel(createdVC);
 
-    cachedVC.set(createdVC.id, createdVC);
+    cachedVC.set(createdVC.id, {
+      voiceChannel: createdVC,
+      authorId: member.id,
+    });
   } catch (error) {
     console.warn(`[ERROR]: Create voice error: ${error}`);
   }
 };
 
 const deleteVoiceChannel = async (voiceState: VoiceState) => {
-  if (!voiceState.channelId) return;
+  const sessionMember = voiceState.member;
+  if (!voiceState.channelId || !sessionMember) return;
 
   const channel = cachedVC.get(voiceState.channelId);
-  const sessionMember = voiceState.member;
+  if (!channel) return;
 
-  if (!channel || !sessionMember) return;
+  const vc = channel.voiceChannel;
 
   try {
-    if (!channel.members.size) {
-      await channel.delete('Session end');
-      cachedVC.delete(voiceState.channelId);
-
+    if (!vc.members.size) {
+      await vc.delete('Session end');
+      cachedVC.delete(sessionMember.id);
       return;
     }
 
-    const member = channel.members.first();
+    const member = vc.members.first();
     if (!member) return;
 
-    channel.edit({
-      name: `m -> ${(member.nickname ?? member.displayName).toLowerCase()}`,
-      permissionOverwrites: [
-        {
-          type: OverwriteType.Member,
-          id: sessionMember.id,
-          deny: [PermissionFlagsBits.ManageChannels],
-        },
-        {
-          type: OverwriteType.Member,
-          id: member.id,
-          allow: [PermissionFlagsBits.ManageChannels],
-        },
-      ],
+    await vc.edit({
+      name: `m -> ${member.displayName.toLowerCase()}`,
+    });
+    cachedVC.set(vc.id, {
+      voiceChannel: vc,
+      authorId: member.id,
     });
   } catch (error) {
     console.warn(`[ERROR]: Delete voice error: ${error}`);

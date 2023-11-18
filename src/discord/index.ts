@@ -1,13 +1,45 @@
-import { Events } from 'discord.js';
-import { discord_client } from './bot_client';
+import { Collection, Events, VoiceChannel } from 'discord.js';
+import { cachedCommands, cachedVC, discord_client } from './bot_client';
+import './command';
 import { createVoiceChannel, deleteVoiceChannel } from './function/voice_limit';
 
-discord_client.once(Events.ClientReady, (c) =>
-  console.log(`Bot is running with tag: ${c.user.tag}`)
-);
+discord_client.once(Events.ClientReady, (c) => {
+  const guilds = c.guilds.cache;
+
+  for (const [_, guild] of guilds) {
+    const voiceChannels = guild.channels.cache.filter(
+      (channel) =>
+        channel instanceof VoiceChannel && channel.name.startsWith('m ->')
+    ) as Collection<string, VoiceChannel>;
+
+    voiceChannels.map((vc) => {
+      const username = vc.name.split(' -> ')[1];
+      const member = vc.members.find((mem) => mem.displayName === username);
+      if (!member) return;
+
+      cachedVC.set(vc.id, {
+        voiceChannel: vc,
+        authorId: member.id,
+      });
+    });
+  }
+});
+
+discord_client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = cachedCommands.get(interaction.commandName);
+  if (!command) return;
+
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.log(`[ERROR]: Execute command error: ${error}`);
+  }
+});
 
 discord_client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
-  if (newState.channel?.name.startsWith('[m]')) {
+  if (newState.channel?.name.startsWith('[m')) {
     await createVoiceChannel(newState);
   }
 

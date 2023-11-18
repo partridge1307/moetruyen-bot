@@ -2,9 +2,9 @@ import {
   BitFieldResolvable,
   Client,
   GatewayIntentBits,
-  TextChannel,
   VoiceChannel,
 } from 'discord.js';
+import { TCommand } from '../types/globals';
 
 const intents: BitFieldResolvable<keyof typeof GatewayIntentBits, number> = [
   GatewayIntentBits.Guilds,
@@ -25,6 +25,12 @@ else {
   client = cachedDiscord.discord;
 }
 
-export const cachedVC = new Map<string, VoiceChannel>();
+export type TVoiceManagement = {
+  voiceChannel: VoiceChannel;
+  authorId: string;
+};
+
+export const cachedVC = new Map<string, TVoiceManagement>();
+export const cachedCommands = new Map<string, TCommand>();
 
 export const discord_client = client;
