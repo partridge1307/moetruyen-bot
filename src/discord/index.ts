@@ -39,7 +39,7 @@ discord_client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 discord_client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
-  if (newState.channel?.name.startsWith('[m')) {
+  if (newState.channel?.name.startsWith('[m]')) {
     await createVoiceChannel(newState);
   }
 
