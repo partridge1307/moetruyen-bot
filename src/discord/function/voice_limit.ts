@@ -63,7 +63,7 @@ const deleteVoiceChannel = async (voiceState: VoiceState) => {
   if (!voiceState.channelId || !sessionMember) return;
 
   const channel = cachedVC.get(voiceState.channelId);
-  if (!channel) return;
+  if (!channel || channel.authorId !== sessionMember.id) return;
 
   const vc = channel.voiceChannel;
 
