@@ -14,7 +14,9 @@ discord_client.once(Events.ClientReady, (c) => {
 
     voiceChannels.map((vc) => {
       const username = vc.name.split(' -> ')[1];
-      const member = vc.members.find((mem) => mem.displayName === username);
+      const member = vc.members.find(
+        (mem) => mem.displayName.toLowerCase() === username
+      );
       if (!member) return;
 
       cachedVC.set(vc.id, {

@@ -13,7 +13,7 @@ const generateEmbed = (member: GuildMember, type: 'CREATED' | 'EDIT') => {
       : 'Temporary Channel Author Changed'
   );
   embed.setDescription(`
-  COMMAND:\n</voice bitrate:1175474410312962049> Để chỉnh bitrate cho Channel.\n</voice limit:1175474410312962049> Để chỉnh limit cho Channel.`);
+  ****COMMAND****:\n\n</voice bitrate:1175474410312962049> Để chỉnh bitrate cho Channel.\n</voice limit:1175474410312962049> Để chỉnh limit cho Channel.`);
   embed.addFields([
     {
       name: 'Author',
@@ -43,7 +43,10 @@ const createVoiceChannel = async (voiceState: VoiceState) => {
 
     await Promise.all([
       member.voice.setChannel(createdVC),
-      createdVC.send({ embeds: [generateEmbed(member, 'CREATED')] }),
+      createdVC.send({
+        content: `<@${member.id}>`,
+        embeds: [generateEmbed(member, 'CREATED')],
+      }),
     ]);
 
     cachedVC.set(createdVC.id, {
@@ -79,7 +82,10 @@ const deleteVoiceChannel = async (voiceState: VoiceState) => {
         name: `m -> ${member.displayName.toLowerCase()}`,
       })
       .then((channel) =>
-        channel.send({ embeds: [generateEmbed(member, 'EDIT')] })
+        channel.send({
+          content: `<@${member.id}>`,
+          embeds: [generateEmbed(member, 'EDIT')],
+        })
       );
     cachedVC.set(vc.id, {
       voiceChannel: vc,
