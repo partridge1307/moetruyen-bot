@@ -15,7 +15,7 @@ discord_client.once(Events.ClientReady, (c) => {
     voiceChannels.map((vc) => {
       const username = vc.name.split(' -> ')[1];
       const member = vc.members.find(
-        (mem) => mem.displayName.toLowerCase() === username
+        (mem) => mem.user.username.toLowerCase() === username
       );
       if (!member) return;
 

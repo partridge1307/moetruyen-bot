@@ -35,7 +35,7 @@ const createVoiceChannel = async (voiceState: VoiceState) => {
 
   try {
     const createdVC = await channel.guild.channels.create({
-      name: `m -> ${member.displayName.toLowerCase()}`,
+      name: `m -> ${member.user.username.toLowerCase()}`,
       type: ChannelType.GuildVoice,
       parent: channel.parent,
       userLimit: 7,
@@ -79,7 +79,7 @@ const deleteVoiceChannel = async (voiceState: VoiceState) => {
 
     await vc
       .edit({
-        name: `m -> ${member.displayName.toLowerCase()}`,
+        name: `m -> ${member.user.username.toLowerCase()}`,
       })
       .then((channel) =>
         channel.send({
