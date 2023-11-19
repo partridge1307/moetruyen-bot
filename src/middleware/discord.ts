@@ -3,7 +3,8 @@ import { DiscordValidator } from '../lib/validator/discord';
 import { ZodError } from 'zod';
 
 const discordMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  if (req.method !== 'POST') res.status(422).end('Only accept POST request');
+  if (req.method !== 'POST')
+    return res.status(422).end('Only accept POST request');
 
   try {
     const validatedValue = DiscordValidator.parse(req.body);
