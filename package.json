@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "NODE_ENV=development nodemon src/index.ts",
-    "start": "NODE_ENV=production node dist/index.js"
+    "start": "NODE_ENV=production node dist/index.js --p 5000"
   },
   "author": "moetruyen",
   "license": "ISC",
