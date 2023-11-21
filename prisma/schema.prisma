@@ -151,13 +151,15 @@ model TeamJoinRequest {
 }
 
 model Team {
-  id          Int       @id @default(autoincrement())
-  image       String
-  name        String    @unique
-  description String
-  ownerId     String    @unique
-  createdAt   DateTime  @default(now())
-  chapter     Chapter[]
+  id                   Int       @id @default(autoincrement())
+  image                String
+  cover                String?
+  name                 String    @unique
+  description          Json
+  plainTextDescription String
+  ownerId              String    @unique
+  createdAt            DateTime  @default(now())
+  chapter              Chapter[]
 
   member          User[]            @relation("teamMember")
   teamJoinRequest TeamJoinRequest[]

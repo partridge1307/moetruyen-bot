@@ -117,8 +117,10 @@ CREATE TABLE "TeamJoinRequest" (
 CREATE TABLE "Team" (
     "id" SERIAL NOT NULL,
     "image" TEXT NOT NULL,
+    "cover" TEXT,
     "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" JSONB NOT NULL,
+    "plainTextDescription" TEXT NOT NULL,
     "ownerId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "totalView" INTEGER NOT NULL DEFAULT 0,

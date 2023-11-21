@@ -1,3 +1,6 @@
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
 -- Create Index
 CREATE INDEX IF NOT EXISTS "User_name_index" ON "User" USING GIN (to_tsvector('english', "name"));
 
