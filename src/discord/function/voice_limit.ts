@@ -13,7 +13,7 @@ const generateEmbed = (member: GuildMember, type: 'CREATED' | 'EDIT') => {
       : 'Temporary Channel Author Changed'
   );
   embed.setDescription(`
-  ****COMMAND****:\n\n</voice bitrate:1177333446352322685> Để chỉnh bitrate cho Channel.\n</voice limit:1177333446352322685> Để chỉnh limit cho Channel.`);
+  ****COMMAND****:\n\n</voice bitrate:1177337422598647905> Để chỉnh bitrate cho Channel.\n</voice limit:1177337422598647905> Để chỉnh limit cho Channel.`);
   embed.addFields([
     {
       name: 'Author',
