@@ -32,6 +32,8 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
     await rest.put(Routes.applicationCommands(process.env.DISCORD_ID), {
       body: commands,
     });
+
+    console.log(`Loaded ${commands.length} commands`);
   } catch (error) {
     console.warn(`[ERROR]: Load command error: ${error}`);
   }

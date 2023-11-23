@@ -1,4 +1,5 @@
 import type {
+  AutocompleteInteraction,
   ChatInputCommandInteraction,
   SlashCommandSubcommandsOnlyBuilder,
 } from 'discord.js';
@@ -10,6 +11,7 @@ export enum NODE_ENV_ENUM {
 
 export type TCommand = {
   data: SlashCommandSubcommandsOnlyBuilder;
+  autocomplete?: (interaction: AutocompleteInteraction) => Promise<void>;
   execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 };
 

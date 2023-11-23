@@ -1,4 +1,10 @@
-import { Collection, Events, VoiceChannel } from 'discord.js';
+import {
+  ApplicationCommandType,
+  Collection,
+  Events,
+  InteractionType,
+  VoiceChannel,
+} from 'discord.js';
 import { cachedCommands, cachedVC, discord_client } from './bot_client';
 import './command';
 import { createVoiceChannel, deleteVoiceChannel } from './function/voice_limit';
@@ -30,15 +36,31 @@ discord_client.once(Events.ClientReady, (c) => {
 });
 
 discord_client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+  switch (interaction.type) {
+    case InteractionType.ApplicationCommand: {
+      if (interaction.commandType !== ApplicationCommandType.ChatInput) return;
 
-  const command = cachedCommands.get(interaction.commandName);
-  if (!command) return;
+      const command = cachedCommands.get(interaction.commandName);
+      if (!command) return;
 
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.log(`[ERROR]: Execute command error: ${error}`);
+      try {
+        await command.execute(interaction);
+      } catch (error) {
+        console.warn(`[ERROR]: Execute command error: ${error}`);
+      }
+      break;
+    }
+    case InteractionType.ApplicationCommandAutocomplete: {
+      const command = cachedCommands.get(interaction.commandName);
+      if (!command) return;
+
+      try {
+        await command.autocomplete?.(interaction);
+      } catch (error) {
+        console.warn(`[ERROR]: Execute autocomplete error: ${error}`);
+      }
+      break;
+    }
   }
 });
 

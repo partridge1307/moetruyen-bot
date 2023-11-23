@@ -1,6 +1,7 @@
 import 'dotenv/config';
-import './discord';
 import { app } from './app';
+import './discord';
+import './lib/cron';
 
 const portArgv = process.argv.findIndex((param) => param === '--p');
 let port = 3000;

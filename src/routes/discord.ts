@@ -29,7 +29,7 @@ routes.post('/channels', async (req, res) => {
   try {
     const [guild, channels, roles] = await Promise.all([
       fetchServer(serverId),
-      fetchChannels(serverId),
+      fetchChannels(userId, serverId),
       fetchRoles(userId, serverId),
     ]);
     if (!channels) return res.status(404).end('Not found server');
