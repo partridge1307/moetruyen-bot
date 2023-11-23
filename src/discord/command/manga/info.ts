@@ -98,10 +98,12 @@ const generateEmbed = (
     {
       name: 'Theo dõi',
       value: `${nFormatter(manga._count.followedBy, 1)}`,
+      inline: true,
     },
     {
       name: 'Chapter',
       value: `${nFormatter(manga._count.chapter, 1)}`,
+      inline: true,
     },
     {
       name: 'Người đăng',

@@ -102,14 +102,12 @@ const generateEmbed = (
     {
       name: 'Theo dõi',
       value: `${nFormatter(user._count.followedBy, 1)}`,
+      inline: true,
     },
     {
       name: 'Truyện tranh',
       value: `${nFormatter(user._count.manga, 1)}`,
-    },
-    {
-      name: 'Gia nhập',
-      value: format(user.createdAt, 'd/M/y'),
+      inline: true,
     },
   ]);
 
@@ -120,6 +118,10 @@ const generateEmbed = (
     });
   }
 
+  embed.addFields({
+    name: 'Gia nhập',
+    value: format(user.createdAt, 'd/M/y'),
+  });
   embed.setThumbnail(user.image);
   embed.setImage(user.banner);
   embed.setFooter({
