@@ -30,7 +30,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
   try {
     await rest.put(Routes.applicationCommands(process.env.DISCORD_ID), {
-      body: commands,
+      body: [],
     });
 
     console.log(`Loaded ${commands.length} commands`);
