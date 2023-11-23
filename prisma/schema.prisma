@@ -109,6 +109,7 @@ model User {
 
   @@index([email], type: Hash)
   @@index([teamId])
+  @@index([name])
 }
 
 model Badge {
@@ -342,6 +343,7 @@ model History {
   id        Int      @id @default(autoincrement())
   userId    String
   mangaId   Int
+  chapterId Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
