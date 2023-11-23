@@ -104,6 +104,10 @@ const generateEmbed = (
       value: `${nFormatter(manga._count.chapter, 1)}`,
     },
     {
+      name: 'Người đăng',
+      value: `${manga.creator.name}`,
+    },
+    {
       name: 'Tạo từ',
       value: format(manga.createdAt, 'd/M/y'),
     },
