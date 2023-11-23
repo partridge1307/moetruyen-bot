@@ -30,17 +30,8 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
   try {
     await rest.put(Routes.applicationCommands(process.env.DISCORD_ID), {
-      body: cachedCommands,
+      body: commands,
     });
-    await rest.put(
-      Routes.applicationGuildCommands(
-        process.env.DISCORD_ID,
-        '533169283375693844'
-      ),
-      {
-        body: [],
-      }
-    );
 
     console.log(`Loaded ${commands.length} commands`);
   } catch (error) {
