@@ -48,7 +48,7 @@ const command: TCommand = {
     });
 
     await interaction.respond(
-      result.map((user) => ({ name: user.name, value: user.id }))
+      result.map((user) => ({ name: user.name, value: user.name }))
     );
   },
   execute: async (interaction) => {
@@ -154,7 +154,7 @@ const getUser = async (interaction: ChatInputCommandInteraction) => {
   try {
     const user = await db.user.findUniqueOrThrow({
       where: {
-        id: value,
+        name: value,
       },
       select: {
         banner: true,
