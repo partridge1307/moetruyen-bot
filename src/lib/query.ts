@@ -2,6 +2,7 @@ import { generateSearchPhrase } from './utils';
 import { db } from './db';
 
 export type SearchUserAutoCompleteResult = {
+  id: string;
   name: string;
 };
 export const SearchUserAutoComplete = ({
@@ -11,7 +12,7 @@ export const SearchUserAutoComplete = ({
 }): Promise<SearchUserAutoCompleteResult[]> => {
   const query = generateSearchPhrase(searchPhrase);
 
-  return db.$queryRaw`SELECT "name" FROM "User" WHERE to_tsvector('english', "name") @@ to_tsquery(${query}) LIMIT 10`;
+  return db.$queryRaw`SELECT "id", "name" FROM "User" WHERE to_tsvector('english', "name") @@ to_tsquery(${query}) LIMIT 10`;
 };
 
 export type SearchMangaAutoCompleteResult = {
