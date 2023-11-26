@@ -6,7 +6,7 @@ export const AuthValidator = z.object({
   exp: z.number(),
   data: z.record(
     z.string().min(1),
-    z.record(z.string().min(1), z.string()).or(z.string())
+    z.record(z.string().min(1), z.string()).or(z.string()).or(z.number())
   ),
 });
 export type TAuthValidator = z.infer<typeof AuthValidator>;

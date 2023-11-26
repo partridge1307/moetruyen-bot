@@ -90,7 +90,7 @@ const sendSetUpEmbed = async (data: any) => {
     if (!!mentionRole) {
       embed.addFields({
         name: 'Role',
-        value: `<@${mentionRole.id}>`,
+        value: `<@&${mentionRole.id}>`,
       });
     }
 
@@ -138,6 +138,7 @@ const sendNotifyEmbed = async (data: any) => {
           select: {
             slug: true,
             name: true,
+            cover: true,
             image: true,
             review: true,
           },
@@ -158,7 +159,7 @@ const sendNotifyEmbed = async (data: any) => {
     });
     embed.setTitle(`${chapter.manga.name} - Chapter ${chapter.chapterIndex}`);
     embed.setDescription(chapter.manga.review);
-    embed.setImage(chapter.manga.image);
+    embed.setThumbnail(chapter.manga.image);
     embed.addFields([
       {
         name: 'Volume',
@@ -174,6 +175,10 @@ const sendNotifyEmbed = async (data: any) => {
     embed.setFooter({
       text: `Tạo từ: ${format(chapter.createdAt, 'd/M/y')}`,
     });
+
+    if (!!chapter.manga.cover) {
+      embed.setImage(chapter.manga.cover);
+    }
 
     const chapterButton = new ButtonBuilder();
     chapterButton.setStyle(ButtonStyle.Link);
@@ -199,7 +204,7 @@ const sendNotifyEmbed = async (data: any) => {
     );
 
     sendChannel.send({
-      ...(roleId && { content: `<@${roleId}>` }),
+      ...(roleId && { content: `<@&${roleId}>` }),
       embeds: [embed],
       components: [row],
     });
